@@ -43,18 +43,28 @@ export async function saveFlowerImageToStorage(
         try {
             await FileSystem.readAsStringAsync(directoryUrl + '/main.png');
             await FileSystem.deleteAsync(directoryUrl + '/main.png');
+            await FileSystem.writeAsStringAsync(directoryUrl + '/main.png', image, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
         } catch (ex3) {
             console.log('ex3', ex3);
 
             if (ex3 instanceof Error) {
                 if (ex3.message.includes('No such file or directory')) {
-                    console.log('writing file');
                     await FileSystem.writeAsStringAsync(directoryUrl + '/main.png', image, {
                         encoding: FileSystem.EncodingType.Base64,
                     });
                 }
             }
         }
+    }
+}
+
+export async function removeFlowerImageToStorage({ directoryUrl }: Flower): Promise<void> {
+    try {
+        await FileSystem.deleteAsync(directoryUrl);
+    } catch (ex) {
+        console.log('removeFlowerImageToStorage ex', ex);
     }
 }
 

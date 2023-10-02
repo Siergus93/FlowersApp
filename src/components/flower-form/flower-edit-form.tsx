@@ -7,6 +7,7 @@ export type FlowerEditFormProps = {
     flowerImage: string | undefined;
     setCurrentFlower: (flower: Flower) => void;
     onSaveFlower: (flower: Flower, flowerImage: string | undefined) => Promise<void>;
+    onRemoveFlower: (flower: Flower) => Promise<void>;
 };
 
 export const FlowerEditForm = ({
@@ -14,6 +15,7 @@ export const FlowerEditForm = ({
     flowerImage,
     onSaveFlower,
     setCurrentFlower,
+    onRemoveFlower,
 }: FlowerEditFormProps) => {
     return (
         <FlowerForm
@@ -23,6 +25,7 @@ export const FlowerEditForm = ({
             onSaveFlower={onSaveFlower}
             setCurrentFlower={setCurrentFlower}
             submitButtonName='Edit flower'
+            onRemoveFlower={onRemoveFlower}
         />
     );
 };

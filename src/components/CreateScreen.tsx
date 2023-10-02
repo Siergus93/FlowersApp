@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addFlower, editFlower } from '../slices/flowersSlice';
+import { addFlower, editFlower, removeFlower } from '../slices/flowersSlice';
 import { generateId, getDirectoryUrl, createEmptyFlower } from '../utils';
 import { RootStackParamList } from '../../App';
 import { Flower } from '../types';
@@ -43,6 +43,15 @@ export const CreateScreen = ({
         }
     };
 
+    const onRemoveFlower = async (flower: Flower): Promise<void> => {
+        try {
+            dispatch(removeFlower({ flower }));
+            navigation.pop();
+        } catch (exc) {
+            console.log('onRemoveFlower exc', exc);
+        }
+    };
+
     return newFlowerFlow ? (
         <FlowerCreateForm
             currentFlower={currentFlower}
@@ -56,6 +65,7 @@ export const CreateScreen = ({
             flowerImage={initImage}
             setCurrentFlower={setCurrentFlower}
             onSaveFlower={onEditFlower}
+            onRemoveFlower={onRemoveFlower}
         />
     );
 };

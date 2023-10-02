@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { Flower } from '../types';
-import { saveFlowerImageToStorage, saveFlowersData } from '../utils';
+import { saveFlowerImageToStorage, saveFlowersData, removeFlowerImageToStorage } from '../utils';
 
 export interface FlowersState {
     data: Flower[];
@@ -46,7 +46,6 @@ export const flowerSlice = createSlice({
 
             if (image && flower) {
                 const index = state.data.findIndex((f) => f.id === flower.id);
-                console.log('editFlower index', index);
                 if (index !== -1) {
                     state.data[index] = flower;
                     state.images[flower.id] = image;
@@ -67,6 +66,27 @@ export const flowerSlice = createSlice({
                 console.log('no image or flower');
             }
         },
+        removeFlower: (state, { payload }: PayloadAction<ActionType>) => {
+            const { flower: flowerToRemove } = payload;
+
+            if (flowerToRemove) {
+                const index = state.data.findIndex(({ id }) => id === flowerToRemove.id);
+                state.data.splice(index, 1);
+                delete state.images[flowerToRemove.id];
+
+                Promise.all([
+                    saveFlowersData(state.data),
+                    removeFlowerImageToStorage(flowerToRemove),
+                ])
+                    .then(() => {
+                        console.log('flower removed, data saved');
+                    })
+                    .catch((ex) => {
+                        console.log('something went wrong, flower not removed');
+                        throw ex;
+                    });
+            }
+        },
         setData: (state, { payload }: PayloadAction<Flower[]>) => {
             state.data = payload;
         },
@@ -76,6 +96,6 @@ export const flowerSlice = createSlice({
     },
 });
 
-export const { addFlower, editFlower, setData, setImages } = flowerSlice.actions;
+export const { addFlower, editFlower, removeFlower, setData, setImages } = flowerSlice.actions;
 
 export default flowerSlice.reducer;

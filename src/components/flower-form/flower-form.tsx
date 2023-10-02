@@ -21,6 +21,7 @@ export type FlowerFormProps = {
     setCurrentFlower: (flower: Flower) => void;
     flowerImage: string | undefined;
     onSaveFlower: (flower: Flower, flowerImage: string | undefined) => Promise<void>;
+    onRemoveFlower?: (flower: Flower) => Promise<void>;
     submitButtonName: string;
 };
 
@@ -31,6 +32,7 @@ export const FlowerForm = ({
     flowerImage,
     onSaveFlower,
     submitButtonName,
+    onRemoveFlower,
 }: FlowerFormProps) => {
     const [details, setDetails] = useState<boolean>(false);
     const [image, setImage] = useState<string | undefined>(flowerImage ?? '');
@@ -49,8 +51,12 @@ export const FlowerForm = ({
         }
     };
 
-    const onCreateFlower = () => {
+    const onSave = () => {
         onSaveFlower(currentFlower, image ?? undefined);
+    };
+
+    const onRemove = () => {
+        onRemoveFlower && onRemoveFlower(currentFlower);
     };
 
     return (
@@ -97,7 +103,8 @@ export const FlowerForm = ({
                         setCurrentFlower={setCurrentFlower}
                     ></FlowerDetails>
                 )}
-                <Button onPress={onCreateFlower}>{submitButtonName}</Button>
+                <Button onPress={onSave}>{submitButtonName}</Button>
+                {onRemoveFlower && <Button onPress={onRemove}>Remove</Button>}
             </ScrollView>
         </View>
     );
