@@ -4,7 +4,7 @@ import { RootState } from '../store/store';
 import React from 'react';
 import * as FileSystem from 'expo-file-system';
 import { Flower } from '../types';
-import { imagesDirectoryUrl } from '../constants';
+import { imagesDirectoryUrl, dataDirectoryUrl } from '../constants';
 import { useFetchData } from '../hooks/useFetchData';
 import { RootStackParamList } from '../../App';
 import { Center, Image, ScrollView, Heading, View, Pressable, Button } from 'native-base';
@@ -25,7 +25,7 @@ export const HomeScreen = ({
 
     const clearDirectory = async () => {
         try {
-            await FileSystem.deleteAsync(`${FileSystem.documentDirectory}data.json`, {
+            await FileSystem.deleteAsync(dataDirectoryUrl, {
                 idempotent: true,
             });
             await FileSystem.deleteAsync(imagesDirectoryUrl, { idempotent: true });

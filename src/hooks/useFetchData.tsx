@@ -3,6 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import { useDispatch } from 'react-redux';
 import { setData, setImages } from '../slices/flowersSlice';
 import { Flower } from '../types';
+import { photoFileName } from 'constants';
 
 export function useFetchData() {
     const dispatch = useDispatch();
@@ -32,9 +33,12 @@ export function useFetchData() {
         async function readImages(data: Flower[]): Promise<Record<string, string>> {
             try {
                 const flowerImagesPromises = data.map(async ({ directoryUrl, id }) => {
-                    const image = await FileSystem.readAsStringAsync(`${directoryUrl}/main.png`, {
-                        encoding: FileSystem.EncodingType.Base64,
-                    });
+                    const image = await FileSystem.readAsStringAsync(
+                        `${directoryUrl}/${photoFileName}`,
+                        {
+                            encoding: FileSystem.EncodingType.Base64,
+                        },
+                    );
                     return { id, image };
                 });
 

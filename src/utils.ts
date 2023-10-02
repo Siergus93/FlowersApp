@@ -1,13 +1,10 @@
 import { Flower } from './types';
 import * as FileSystem from 'expo-file-system';
-import { imagesDirectoryUrl } from './constants';
+import { imagesDirectoryUrl, dataDirectoryUrl, photoFileName } from './constants';
 import { v4 as uuid } from 'uuid';
 
 export async function saveFlowersData(flowers: Flower[]): Promise<void> {
-    await FileSystem.writeAsStringAsync(
-        FileSystem.documentDirectory + 'data.json',
-        JSON.stringify(flowers),
-    );
+    await FileSystem.writeAsStringAsync(dataDirectoryUrl, JSON.stringify(flowers));
 }
 
 export async function saveFlowerImageToStorage(
@@ -19,7 +16,7 @@ export async function saveFlowerImageToStorage(
     } catch (ex) {
         if (ex instanceof Error) {
             if (ex.message.includes('could not be read')) {
-                await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}images`);
+                await FileSystem.makeDirectoryAsync(imagesDirectoryUrl);
             }
         } else {
             console.log('ex');
@@ -28,6 +25,8 @@ export async function saveFlowerImageToStorage(
     }
 
     if (image) {
+        const photoUrl = `${directoryUrl}/${photoFileName}`;
+
         try {
             await FileSystem.readDirectoryAsync(directoryUrl);
         } catch (ex2) {
@@ -41,9 +40,9 @@ export async function saveFlowerImageToStorage(
             }
         }
         try {
-            await FileSystem.readAsStringAsync(directoryUrl + '/main.png');
-            await FileSystem.deleteAsync(directoryUrl + '/main.png');
-            await FileSystem.writeAsStringAsync(directoryUrl + '/main.png', image, {
+            await FileSystem.readAsStringAsync(photoUrl);
+            await FileSystem.deleteAsync(photoUrl);
+            await FileSystem.writeAsStringAsync(photoUrl, image, {
                 encoding: FileSystem.EncodingType.Base64,
             });
         } catch (ex3) {
@@ -51,7 +50,7 @@ export async function saveFlowerImageToStorage(
 
             if (ex3 instanceof Error) {
                 if (ex3.message.includes('No such file or directory')) {
-                    await FileSystem.writeAsStringAsync(directoryUrl + '/main.png', image, {
+                    await FileSystem.writeAsStringAsync(photoUrl, image, {
                         encoding: FileSystem.EncodingType.Base64,
                     });
                 }
