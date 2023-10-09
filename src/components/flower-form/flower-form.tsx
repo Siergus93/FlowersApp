@@ -19,8 +19,8 @@ export type FlowerFormProps = {
     createFlow: boolean;
     currentFlower: Flower;
     setCurrentFlower: (flower: Flower) => void;
-    flowerImage: string | undefined;
-    onSaveFlower: (flower: Flower, flowerImage: string | undefined) => Promise<void>;
+    images: string[];
+    onSaveFlower: (flower: Flower, images: string[]) => Promise<void>;
     onRemoveFlower?: (flower: Flower) => Promise<void>;
     submitButtonName: string;
 };
@@ -29,13 +29,13 @@ export const FlowerForm = ({
     createFlow,
     currentFlower,
     setCurrentFlower,
-    flowerImage,
+    images,
     onSaveFlower,
     submitButtonName,
     onRemoveFlower,
 }: FlowerFormProps) => {
     const [details, setDetails] = useState<boolean>(false);
-    const [image, setImage] = useState<string | undefined>(flowerImage ?? '');
+    const [currentImages, setCurrentImages] = useState<string[]>(images ?? []);
 
     const onSelectImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -47,12 +47,15 @@ export const FlowerForm = ({
         });
 
         if (!result.canceled) {
-            setImage(result.assets[0].base64 ?? undefined);
+            const newImage = result.assets[0].base64;
+            if (newImage) {
+                setCurrentImages([...currentImages, newImage]);
+            }
         }
     };
 
     const onSave = () => {
-        onSaveFlower(currentFlower, image ?? undefined);
+        onSaveFlower(currentFlower, currentImages);
     };
 
     const onRemove = () => {
@@ -68,17 +71,21 @@ export const FlowerForm = ({
                     placeholder='flower name'
                     onChangeText={(name) => setCurrentFlower({ ...currentFlower, name })}
                 />
-                {image && (
+                {currentImages.length > 0 && (
                     <Center mt='3' mb='4'>
-                        <Image
-                            source={{ uri: `data:image/jpeg;base64,${image}` }}
-                            alt={currentFlower.name}
-                            h='400'
-                            w='300'
-                        />
+                        {currentImages.map((img) => {
+                            return (
+                                <Image
+                                    source={{ uri: `data:image/jpeg;base64,${img}` }}
+                                    alt={currentFlower.name}
+                                    h='400'
+                                    w='300'
+                                />
+                            );
+                        })}
                     </Center>
                 )}
-                {!image && (
+                {/* {currentImages.length <= 0 && (
                     <Center mt='3' mb='4'>
                         <Pressable onPress={onSelectImage}>
                             <Center h='400' w='300'>
@@ -86,7 +93,14 @@ export const FlowerForm = ({
                             </Center>
                         </Pressable>
                     </Center>
-                )}
+                )} */}
+                <Center mt='3' mb='4'>
+                    <Pressable onPress={onSelectImage}>
+                        <Center h='400' w='300'>
+                            <Text fontSize='xl'>Click here to add photo</Text>
+                        </Center>
+                    </Pressable>
+                </Center>
                 <HStack alignItems='center' space={4}>
                     <Text>Show details</Text>
                     <Switch

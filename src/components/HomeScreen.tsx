@@ -17,9 +17,12 @@ export const HomeScreen = ({
     const flowers = useSelector((state: RootState) => state.flower.data);
     const images = useSelector((state: RootState) => state.flower.images);
 
+    console.log('flowers', flowers);
+
     const getOnImagePress = (flower: Flower) => {
+        console.log('getOnImagePress images[flower.id].length', images[flower.id].length);
         return () => {
-            navigation.push('Create', { flower, initImage: images[flower.id] });
+            navigation.push('Create', { flower, images: images[flower.id] });
         };
     };
 
@@ -41,7 +44,7 @@ export const HomeScreen = ({
                     const { name, id } = flower;
                     return (
                         <FlowerImage
-                            imgSource={images[id]}
+                            imgSource={images[id][0]}
                             name={name}
                             key={id}
                             onImagePress={getOnImagePress(flower)}

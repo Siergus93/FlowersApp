@@ -12,7 +12,7 @@ export type RootStackParamList = {
     Home: undefined;
     Create: {
         flower?: Flower;
-        initImage?: string;
+        images?: string[];
     };
     Settings: undefined;
 };

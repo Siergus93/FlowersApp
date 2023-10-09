@@ -5,14 +5,14 @@ import { Flower } from 'types';
 
 export type FlowerCreateFormProps = {
     currentFlower: Flower;
-    flowerImage: string | undefined;
+    images: string[];
     setCurrentFlower: (flower: Flower) => void;
-    onSaveFlower: (flower: Flower, flowerImage: string | undefined) => Promise<void>;
+    onSaveFlower: (flower: Flower, images: string[]) => Promise<void>;
 };
 
 export const FlowerCreateForm = ({
     currentFlower,
-    flowerImage,
+    images,
     setCurrentFlower,
     onSaveFlower,
 }: FlowerCreateFormProps) => {
@@ -21,7 +21,7 @@ export const FlowerCreateForm = ({
             createFlow
             currentFlower={currentFlower}
             setCurrentFlower={setCurrentFlower}
-            flowerImage={flowerImage}
+            images={images}
             onSaveFlower={onSaveFlower}
             submitButtonName='Create flower'
         />

@@ -4,15 +4,15 @@ import { Flower } from 'types';
 
 export type FlowerEditFormProps = {
     currentFlower: Flower;
-    flowerImage: string | undefined;
+    images: string[];
     setCurrentFlower: (flower: Flower) => void;
-    onSaveFlower: (flower: Flower, flowerImage: string | undefined) => Promise<void>;
+    onSaveFlower: (flower: Flower, images: string[]) => Promise<void>;
     onRemoveFlower: (flower: Flower) => Promise<void>;
 };
 
 export const FlowerEditForm = ({
     currentFlower,
-    flowerImage,
+    images,
     onSaveFlower,
     setCurrentFlower,
     onRemoveFlower,
@@ -21,7 +21,7 @@ export const FlowerEditForm = ({
         <FlowerForm
             createFlow={false}
             currentFlower={currentFlower}
-            flowerImage={flowerImage}
+            images={images}
             onSaveFlower={onSaveFlower}
             setCurrentFlower={setCurrentFlower}
             submitButtonName='Edit flower'
