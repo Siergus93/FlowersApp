@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { FlowerForm } from './flower-form';
 import { Flower } from 'types';
 
@@ -23,7 +22,7 @@ export const FlowerCreateForm = ({
             setCurrentFlower={setCurrentFlower}
             images={images}
             onSaveFlower={onSaveFlower}
-            submitButtonName='Create flower'
+            submitButtonName='Save'
         />
     );
 };

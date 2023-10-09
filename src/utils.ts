@@ -1,6 +1,6 @@
 import { Flower } from './types';
 import * as FileSystem from 'expo-file-system';
-import { imagesDirectoryUrl, dataDirectoryUrl, photoFileName } from './constants';
+import { imagesDirectoryUrl, dataDirectoryUrl } from './constants';
 import { v4 as uuid } from 'uuid';
 
 export async function saveFlowersData(flowers: Flower[]): Promise<boolean> {

@@ -85,15 +85,6 @@ export const FlowerForm = ({
                         })}
                     </Center>
                 )}
-                {/* {currentImages.length <= 0 && (
-                    <Center mt='3' mb='4'>
-                        <Pressable onPress={onSelectImage}>
-                            <Center h='400' w='300'>
-                                <Text fontSize='xl'>Click here to add photo</Text>
-                            </Center>
-                        </Pressable>
-                    </Center>
-                )} */}
                 <Center mt='3' mb='4'>
                     <Pressable onPress={onSelectImage}>
                         <Center h='400' w='300'>

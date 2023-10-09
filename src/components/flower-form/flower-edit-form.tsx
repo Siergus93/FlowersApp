@@ -24,7 +24,7 @@ export const FlowerEditForm = ({
             images={images}
             onSaveFlower={onSaveFlower}
             setCurrentFlower={setCurrentFlower}
-            submitButtonName='Edit flower'
+            submitButtonName='Save'
             onRemoveFlower={onRemoveFlower}
         />
     );

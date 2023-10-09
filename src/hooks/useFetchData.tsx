@@ -3,7 +3,6 @@ import * as FileSystem from 'expo-file-system';
 import { useDispatch } from 'react-redux';
 import { setData, setImages } from '../slices/flowersSlice';
 import { Flower } from '../types';
-import { photoFileName } from '../constants';
 
 export function useFetchData() {
     const dispatch = useDispatch();

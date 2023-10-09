@@ -25,9 +25,6 @@ export const createFlower = createAsyncThunk<boolean, FlowerActionPayload, { sta
         const { flower, images } = payload;
         const { flower: flowerState } = getState();
 
-        console.log('createFlower flower', flower);
-        console.log('createFlower flowerState', flowerState);
-
         if (flower) {
             const newData = [...flowerState.data, flower];
             const newImages = { ...flowerState.images, [flower.id]: images };
