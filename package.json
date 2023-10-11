@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "npx eslint ./src",
-    "lint:fix": "eslint --fix '*.{ts,tsx}'",
-    "format": "prettier --write '*.{ts,tsx}' --config .prettierrc"
+    "lint:fix": "npx eslint --fix ./src",
+    "format": "npx prettier 'src/**/*.{ts,tsx,json}' --write"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.8",
