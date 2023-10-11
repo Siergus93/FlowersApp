@@ -1,13 +1,13 @@
 {
-  "name": "FlowersApp",
-  "version": "1.0.0",
+  "name": "flower-app",
+  "version": "0.0.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint *.{ts,tsx}",
+    "lint": "npx eslint ./src",
     "lint:fix": "eslint --fix '*.{ts,tsx}'",
     "format": "prettier --write '*.{ts,tsx}' --config .prettierrc"
   },
@@ -47,6 +47,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-native": "^4.1.0",
     "prettier": "3.0.3",
     "typescript": "^5.2.2"
   },

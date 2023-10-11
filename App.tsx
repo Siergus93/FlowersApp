@@ -9,27 +9,27 @@ import { CreateScreen } from './src/components/CreateScreen';
 import { NativeBaseProvider } from 'native-base';
 
 export type RootStackParamList = {
-    Home: undefined;
-    Create: {
-        flower?: Flower;
-        images?: string[];
-    };
-    Settings: undefined;
+  Home: undefined;
+  Create: {
+    flower?: Flower;
+    images?: string[];
+  };
+  Settings: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-    return (
-        <Provider store={store}>
-            <NavigationContainer>
-                <NativeBaseProvider>
-                    <Stack.Navigator>
-                        <Stack.Screen name='Home' component={HomeScreen} />
-                        <Stack.Screen name='Create' component={CreateScreen} />
-                    </Stack.Navigator>
-                </NativeBaseProvider>
-            </NavigationContainer>
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <NativeBaseProvider>
+          <Stack.Navigator>
+            <Stack.Screen name='Home' component={HomeScreen} />
+            <Stack.Screen name='Create' component={CreateScreen} />
+          </Stack.Navigator>
+        </NativeBaseProvider>
+      </NavigationContainer>
+    </Provider>
+  );
 }
