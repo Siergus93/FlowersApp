@@ -17,7 +17,6 @@ export const FlowerCreateForm = ({
 }: FlowerCreateFormProps) => {
   return (
     <FlowerForm
-      createFlow
       currentFlower={currentFlower}
       setCurrentFlower={setCurrentFlower}
       images={images}

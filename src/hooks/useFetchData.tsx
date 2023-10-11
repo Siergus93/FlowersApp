@@ -24,7 +24,7 @@ export function useFetchData() {
         const result = await FileSystem.readAsStringAsync(
           `${FileSystem.documentDirectory}data.json`,
         );
-        return JSON.parse(result);
+        return JSON.parse(result) as Flower[];
       } catch (ex) {
         console.log('Cannot read data.json file');
         console.log(ex);
@@ -64,6 +64,6 @@ export function useFetchData() {
       return Promise.all(imagesPromises);
     }
 
-    readData();
+    void readData();
   }, []);
 }

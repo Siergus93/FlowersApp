@@ -16,7 +16,6 @@ import {
 import { FlowerDetails } from './flower-details-form';
 
 export type FlowerFormProps = {
-  createFlow: boolean;
   currentFlower: Flower;
   setCurrentFlower: (flower: Flower) => void;
   images: string[];
@@ -26,7 +25,6 @@ export type FlowerFormProps = {
 };
 
 export const FlowerForm = ({
-  createFlow,
   currentFlower,
   setCurrentFlower,
   images,
@@ -55,11 +53,11 @@ export const FlowerForm = ({
   };
 
   const onSave = () => {
-    onSaveFlower(currentFlower, currentImages);
+    void onSaveFlower(currentFlower, currentImages);
   };
 
   const onRemove = () => {
-    onRemoveFlower && onRemoveFlower(currentFlower);
+    onRemoveFlower && void onRemoveFlower(currentFlower);
   };
 
   return (
@@ -80,13 +78,14 @@ export const FlowerForm = ({
                   alt={currentFlower.name}
                   h='400'
                   w='300'
+                  key={img.substring(0, 10)}
                 />
               );
             })}
           </Center>
         )}
         <Center mt='3' mb='4'>
-          <Pressable onPress={onSelectImage}>
+          <Pressable onPress={void onSelectImage}>
             <Center h='400' w='300'>
               <Text fontSize='xl'>Click here to add photo</Text>
             </Center>
@@ -96,7 +95,7 @@ export const FlowerForm = ({
           <Text>Show details</Text>
           <Switch
             value={details}
-            onToggle={(details) => {
+            onToggle={(details: boolean) => {
               setDetails(details);
             }}
             size='md'

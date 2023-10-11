@@ -55,7 +55,7 @@ export const HomeScreen = ({
       <Button onPress={() => navigation.push('Create', {})}>Add</Button>
       <Button
         onPress={() => {
-          clearDirectory();
+          void clearDirectory();
         }}
       >
         Remove all

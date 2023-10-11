@@ -28,7 +28,7 @@ export const CreateScreen = ({
         directoryUrl: getDirectoryUrl(id),
       } satisfies Flower;
 
-      dispatch(createFlower({ flower: flowerToSave, images }));
+      await dispatch(createFlower({ flower: flowerToSave, images }));
       navigation.pop();
     } catch (exc) {
       console.log('onAddFlower exc', exc);
@@ -37,7 +37,7 @@ export const CreateScreen = ({
 
   const onEditFlower = async (flower: Flower, images: string[]): Promise<void> => {
     try {
-      dispatch(editFlower({ flower, images }));
+      await dispatch(editFlower({ flower, images }));
       navigation.pop();
     } catch (exc) {
       console.log('onEditFlower exc', exc);
@@ -46,7 +46,7 @@ export const CreateScreen = ({
 
   const onRemoveFlower = async (flower: Flower): Promise<void> => {
     try {
-      dispatch(removeFlower({ flower, images: [] }));
+      await dispatch(removeFlower({ flower, images: [] }));
       navigation.pop();
     } catch (exc) {
       console.log('onRemoveFlower exc', exc);

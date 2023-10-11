@@ -19,7 +19,6 @@ export const FlowerEditForm = ({
 }: FlowerEditFormProps) => {
   return (
     <FlowerForm
-      createFlow={false}
       currentFlower={currentFlower}
       images={images}
       onSaveFlower={onSaveFlower}
