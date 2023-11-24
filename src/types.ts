@@ -13,3 +13,8 @@ export type FlowerAdditional = {
 };
 
 export type Flower = FlowerBase & FlowerAdditional;
+
+export type FlowerImage = {
+  id: string;
+  base64: string;
+};

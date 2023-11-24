@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flower } from 'types';
+import { Flower } from '../../types';
 import { View, Text, Input, HStack, VStack } from 'native-base';
 
 export type FlowerDetailsProps = {

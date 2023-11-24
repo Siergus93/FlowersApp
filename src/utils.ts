@@ -1,17 +1,11 @@
-import { Flower } from './types';
+import { Flower, FlowerImage } from './types';
 import * as FileSystem from 'expo-file-system';
 import { imagesDirectoryUrl, dataDirectoryUrl } from './constants';
 import { v4 as uuid } from 'uuid';
 
 export async function saveFlowersData(flowers: Flower[]): Promise<boolean> {
-  console.log('saveFlowersData');
   try {
-    console.log('saveFlowersData trying to save data', flowers);
     await FileSystem.writeAsStringAsync(dataDirectoryUrl, JSON.stringify(flowers));
-
-    const directory = await FileSystem.readDirectoryAsync(`${FileSystem.documentDirectory}`);
-    console.log('saveFlowersData directory', directory);
-
     return true;
   } catch (ex) {
     console.log('saveFlowersData ex', ex);
@@ -19,67 +13,80 @@ export async function saveFlowersData(flowers: Flower[]): Promise<boolean> {
   }
 }
 
+async function createImagesDirectory(): Promise<string> {
+  try {
+    await FileSystem.readDirectoryAsync(imagesDirectoryUrl);
+    return 'exists';
+  } catch (ex) {
+    await FileSystem.makeDirectoryAsync(imagesDirectoryUrl);
+    return 'created';
+  }
+}
+
+async function createDirectoryForImage(directoryUrl: string): Promise<string> {
+  try {
+    await FileSystem.readDirectoryAsync(directoryUrl);
+    return 'exists';
+  } catch (ex) {
+    await FileSystem.makeDirectoryAsync(directoryUrl);
+    return 'created';
+  }
+}
+
+async function createImage(
+  image: FlowerImage,
+  directoryUrl: string,
+  imageIndex: number,
+): Promise<string> {
+  const photoUrl = `${directoryUrl}/${imageIndex}`;
+
+  try {
+    await FileSystem.readAsStringAsync(photoUrl);
+    await FileSystem.deleteAsync(photoUrl);
+    await FileSystem.writeAsStringAsync(photoUrl, image.base64, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    return 'updated';
+  } catch (ex) {
+    if (ex instanceof Error) {
+      if (ex.message.includes('No such file or directory')) {
+        try {
+          await FileSystem.writeAsStringAsync(photoUrl, image.base64, {
+            encoding: FileSystem.EncodingType.Base64,
+          });
+        } catch (ex4) {
+          console.log('ex4', ex4);
+        }
+        return 'created';
+      } else {
+        console.log('createImage ex', ex);
+        return 'error';
+      }
+    } else {
+      console.log('createImage ex', ex);
+      return 'error';
+    }
+  }
+}
+
 export async function saveFlowerImageToStorage(
   { directoryUrl }: Flower,
-  image: string | undefined,
+  image: FlowerImage | undefined,
   imageIndex: number,
 ): Promise<string> {
   console.log('saveFlowerImageToStorage directoryUrl', directoryUrl, 'imageIndex', imageIndex);
+
   try {
-    console.log('imagesDirectoryUrl', imagesDirectoryUrl);
-    const readDirectoryResult = await FileSystem.readDirectoryAsync(imagesDirectoryUrl);
-    console.log('readDirectoryResult', readDirectoryResult);
+    await createImagesDirectory();
+    await createDirectoryForImage(directoryUrl);
+    if (image) {
+      await createImage(image, directoryUrl, imageIndex);
+    }
+    return 'saved';
   } catch (ex) {
-    if (ex instanceof Error) {
-      if (ex.message.includes('could not be read')) {
-        await FileSystem.makeDirectoryAsync(imagesDirectoryUrl);
-      }
-    } else {
-      console.log('ex');
-      console.log(ex);
-    }
+    console.log('saveFlowerImageToStorage ex', ex);
+    return 'error';
   }
-
-  if (image) {
-    const photoUrl = `${directoryUrl}/${imageIndex}`;
-    console.log('photoUrl', photoUrl);
-
-    try {
-      console.log('directoryUrl', directoryUrl);
-      const photoDirectory = await FileSystem.readDirectoryAsync(directoryUrl);
-      console.log('photoDirectory', photoDirectory);
-    } catch (ex2) {
-      if (ex2 instanceof Error) {
-        if (ex2.message.includes('could not be read')) {
-          await FileSystem.makeDirectoryAsync(directoryUrl);
-        }
-      } else {
-        console.log('ex2');
-        console.log(ex2);
-      }
-    }
-    try {
-      await FileSystem.readAsStringAsync(photoUrl);
-      await FileSystem.deleteAsync(photoUrl);
-      await FileSystem.writeAsStringAsync(photoUrl, image, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      console.log('image edited', photoUrl);
-    } catch (ex3) {
-      console.log('ex3', ex3);
-
-      if (ex3 instanceof Error) {
-        if (ex3.message.includes('No such file or directory')) {
-          await FileSystem.writeAsStringAsync(photoUrl, image, {
-            encoding: FileSystem.EncodingType.Base64,
-          });
-          console.log('image created', photoUrl);
-          return photoUrl;
-        }
-      }
-    }
-  }
-  return '';
 }
 
 export async function removeFlowerImageToStorage({ directoryUrl }: Flower): Promise<void> {

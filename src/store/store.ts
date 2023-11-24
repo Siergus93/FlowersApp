@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import flowerReducer from '../slices/flowersSlice';
+import flowerReducer from './flowersSlice';
 
 export const store = configureStore({
   reducer: {

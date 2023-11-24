@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Flower } from '../../types';
+import { Flower, FlowerImage } from '../../types';
 import {
   View,
   Text,
@@ -13,13 +13,14 @@ import {
   Switch,
   Button,
 } from 'native-base';
-import { FlowerDetails } from './flower-details-form';
+import { FlowerDetails } from '../../components/flower-form/flower-details-form';
+import { generateId } from '../../utils';
 
 export type FlowerFormProps = {
   currentFlower: Flower;
   setCurrentFlower: (flower: Flower) => void;
-  images: string[];
-  onSaveFlower: (flower: Flower, images: string[]) => Promise<void>;
+  images: FlowerImage[];
+  onSaveFlower: (flower: Flower, images: FlowerImage[]) => Promise<void>;
   onRemoveFlower?: (flower: Flower) => Promise<void>;
   submitButtonName: string;
 };
@@ -33,7 +34,7 @@ export const FlowerForm = ({
   onRemoveFlower,
 }: FlowerFormProps) => {
   const [details, setDetails] = useState<boolean>(false);
-  const [currentImages, setCurrentImages] = useState<string[]>(images ?? []);
+  const [currentImages, setCurrentImages] = useState<FlowerImage[]>(images ?? []);
 
   const onSelectImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -46,8 +47,9 @@ export const FlowerForm = ({
 
     if (!result.canceled) {
       const newImage = result.assets[0].base64;
+      const imageId = generateId();
       if (newImage) {
-        setCurrentImages([...currentImages, newImage]);
+        setCurrentImages([...currentImages, { id: imageId, base64: newImage }]);
       }
     }
   };
@@ -71,21 +73,25 @@ export const FlowerForm = ({
         />
         {currentImages.length > 0 && (
           <Center mt='3' mb='4'>
-            {currentImages.map((img) => {
+            {currentImages.map(({ id, base64 }) => {
               return (
                 <Image
-                  source={{ uri: `data:image/jpeg;base64,${img}` }}
+                  source={{ uri: `data:image/jpeg;base64,${base64}` }}
                   alt={currentFlower.name}
                   h='400'
                   w='300'
-                  key={img.substring(0, 10)}
+                  key={id}
                 />
               );
             })}
           </Center>
         )}
         <Center mt='3' mb='4'>
-          <Pressable onPress={void onSelectImage}>
+          <Pressable
+            onPress={() => {
+              void onSelectImage();
+            }}
+          >
             <Center h='400' w='300'>
               <Text fontSize='xl'>Click here to add photo</Text>
             </Center>

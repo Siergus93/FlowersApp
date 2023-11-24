@@ -1,13 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { editFlower, removeFlower, createFlower } from '../slices/flowersSlice';
 import { generateId, getDirectoryUrl, createEmptyFlower } from '../utils';
 import { RootStackParamList } from '../../App';
-import { Flower } from '../types';
-import { FlowerCreateForm } from './flower-form/flower-create-form';
-import { FlowerEditForm } from './flower-form/flower-edit-form';
+import { Flower, FlowerImage } from '../types';
+import { FlowerCreateForm } from '../components/flower-form/flower-create-form';
+import { FlowerEditForm } from '../components/flower-form/flower-edit-form';
 import { AppDispatch } from '../store/store';
+import { createFlower } from '../store/thunks/create-flower.thunk';
+import { editFlower } from '../store/thunks/edit-flower.thunk';
+import { removeFlower } from '../store/thunks/remove-flower.thunk';
 
 export const CreateScreen = ({
   navigation,
@@ -19,7 +21,7 @@ export const CreateScreen = ({
   const newFlowerFlow = flower === undefined;
   const [currentFlower, setCurrentFlower] = useState<Flower>(flower ?? createEmptyFlower());
 
-  const onAddFlower = async (flower: Flower, images: string[]): Promise<void> => {
+  const onAddFlower = async (flower: Flower, images: FlowerImage[]): Promise<void> => {
     try {
       const id = generateId();
       const flowerToSave = {
@@ -35,7 +37,7 @@ export const CreateScreen = ({
     }
   };
 
-  const onEditFlower = async (flower: Flower, images: string[]): Promise<void> => {
+  const onEditFlower = async (flower: Flower, images: FlowerImage[]): Promise<void> => {
     try {
       await dispatch(editFlower({ flower, images }));
       navigation.pop();

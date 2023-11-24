@@ -1,12 +1,12 @@
 import React from 'react';
-import { FlowerForm } from './flower-form';
-import { Flower } from 'types';
+import { FlowerForm } from '../../components/flower-form/flower-form';
+import { Flower, FlowerImage } from '../../types';
 
 export type FlowerCreateFormProps = {
   currentFlower: Flower;
-  images: string[];
+  images: FlowerImage[];
   setCurrentFlower: (flower: Flower) => void;
-  onSaveFlower: (flower: Flower, images: string[]) => Promise<void>;
+  onSaveFlower: (flower: Flower, images: FlowerImage[]) => Promise<void>;
 };
 
 export const FlowerCreateForm = ({

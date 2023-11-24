@@ -3,16 +3,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { store } from './src/store/store';
 import { Provider } from 'react-redux';
-import { Flower } from './src/types';
-import { HomeScreen } from './src/components/HomeScreen';
-import { CreateScreen } from './src/components/CreateScreen';
+import { Flower, FlowerImage } from './src/types';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { CreateScreen } from './src/screens/CreateScreen';
 import { NativeBaseProvider } from 'native-base';
 
 export type RootStackParamList = {
   Home: undefined;
   Create: {
     flower?: Flower;
-    images?: string[];
+    images?: FlowerImage[];
   };
   Settings: undefined;
 };
@@ -24,9 +24,9 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <NativeBaseProvider>
-          <Stack.Navigator>
-            <Stack.Screen name='Home' component={HomeScreen} />
-            <Stack.Screen name='Create' component={CreateScreen} />
+          <Stack.Navigator screenOptions={{ header: () => null }}>
+            <Stack.Screen name='Home' component={HomeScreen} options={{ title: '' }} />
+            <Stack.Screen name='Create' component={CreateScreen} options={{ title: '' }} />
           </Stack.Navigator>
         </NativeBaseProvider>
       </NavigationContainer>
