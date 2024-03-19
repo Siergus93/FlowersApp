@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useWindowDimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Flower, FlowerImage } from '../../types';
 import {
@@ -36,6 +37,11 @@ export const FlowerForm = ({
   const [details, setDetails] = useState<boolean>(false);
   const [currentImages, setCurrentImages] = useState<FlowerImage[]>(images ?? []);
 
+  useEffect(() => {
+    const id = generateId();
+    console.log('id', id);
+  }, []);
+
   const onSelectImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -44,11 +50,15 @@ export const FlowerForm = ({
       quality: 0.2,
       base64: true,
     });
+    //console.log('onSelectImage result', result);
 
     if (!result.canceled) {
       const newImage = result.assets[0].base64;
+      //console.log('onSelectImage newImage', newImage);
       const imageId = generateId();
+      console.log('onSelectImage imageId', imageId);
       if (newImage) {
+        console.log('onSelectImage newImage is truthy, add image');
         setCurrentImages([...currentImages, { id: imageId, base64: newImage }]);
       }
     }
@@ -63,7 +73,7 @@ export const FlowerForm = ({
   };
 
   return (
-    <View m='4'>
+    <View py='5' bg='emerald.100' h={'100%'}>
       <ScrollView>
         <Text>Name</Text>
         <Input

@@ -1,12 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { Flower, FlowerImage } from '../types';
 import { useFetchData } from '../hooks/useFetchData/useFetchData';
 import { RootStackParamList } from '../../App';
-import { ScrollView, View, Fab, Icon } from 'native-base';
+import { ScrollView, View, Fab, Icon, Button, VStack } from 'native-base';
 import { removeFlowerData } from '../store/thunks/remove-flower-data.thunk';
 import { AntDesign } from '@expo/vector-icons';
 import { FlowerList } from '../components/flower-list';
@@ -28,17 +28,37 @@ export const HomeScreen = ({
     navigation.push('Create', { flower, images: images[flower.id] });
   };
 
+  // useEffect(() => {
+  //   void dispatch(removeFlowerData());
+  // }, []);
+
   return (
     <View testID='home-screen-view' bg='emerald.100' py='10'>
-      <ScrollView testID='home-screen-flowers-view' h={height - 50} w={width}>
+      <ScrollView testID='home-screen-flowers-view' h={height - 120} w={width}>
         <FlowerList
           flowers={flowers}
           navigateToCreateScreen={navigateToCreateScreen}
           images={images}
         />
       </ScrollView>
-      <View testID='home-screen-manage-buttons'>
-        <Fab
+      <VStack testID='home-screen-manage-buttons'>
+        <Button
+          testID='home-screen-create-button'
+          onPress={() => navigation.push('Create', {})}
+          bg='emerald.600'
+          m='1'
+        >
+          Add new
+        </Button>
+        <Button
+          testID='home-screen-delete-button'
+          onPress={() => void dispatch(removeFlowerData())}
+          bg='red.400'
+          m='1'
+        >
+          Remove all
+        </Button>
+        {/* <Fab
           testID='home-screen-create-button'
           renderInPortal={false}
           shadow={2}
@@ -46,9 +66,9 @@ export const HomeScreen = ({
           icon={<Icon color='white' as={AntDesign} name='plus' size='sm' />}
           onPress={() => navigation.push('Create', {})}
           bg='emerald.600'
-        />
+        /> */}
 
-        <Fab
+        {/* <Fab
           testID='home-screen-delete-button'
           renderInPortal={false}
           shadow={2}
@@ -57,8 +77,8 @@ export const HomeScreen = ({
           onPress={() => void dispatch(removeFlowerData())}
           bg='red.400'
           placement='bottom-left'
-        />
-      </View>
+        /> */}
+      </VStack>
     </View>
   );
 };
