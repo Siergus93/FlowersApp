@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { saveFlowerImageToStorage, saveFlowersData } from '../../utils';
+import { saveFlowersData } from '../../utils';
 import { RootState } from '../../store/store';
 import {
   FlowerActionNames,
@@ -7,6 +7,7 @@ import {
   setImages,
   FlowerActionPayload,
 } from '../../store/flowersSlice';
+import { saveFlowerImageToStorage } from 'utils/saveFlowerImageToStorage';
 
 export const createFlower = createAsyncThunk<boolean, FlowerActionPayload, { state: RootState }>(
   FlowerActionNames.createFlower,

@@ -25,7 +25,7 @@ export const readImages = async (data: Flower[]): Promise<Record<string, FlowerI
     });
 
     const images = await Promise.all(flowerImagesPromises);
-    const result = images.reduce((agg, { id, images }) => {
+    const result = images.reduce<Record<string, FlowerImage[]>>((agg, { id, images }) => {
       return { ...agg, [id]: images };
     }, {});
     return result;
@@ -36,8 +36,8 @@ export const readImages = async (data: Flower[]): Promise<Record<string, FlowerI
   return {};
 };
 
-const readFlowerImages = (directoryUrl: string, imageNames: string[]): Promise<string[]> => {
-  const imagesPromises = imageNames.map((imageName) => {
+const readFlowerImages = async (directoryUrl: string, imageNames: string[]): Promise<string[]> => {
+  const imagesPromises = imageNames.map(async (imageName) => {
     return FileSystem.readAsStringAsync(`${directoryUrl}/${imageName}`, {
       encoding: FileSystem.EncodingType.Base64,
     });

@@ -6,9 +6,8 @@ import { useWindowDimensions } from 'react-native';
 import { Flower, FlowerImage } from '../types';
 import { useFetchData } from '../hooks/useFetchData/useFetchData';
 import { RootStackParamList } from '../../App';
-import { ScrollView, View, Fab, Icon, Button, VStack } from 'native-base';
+import { ScrollView, View, Button, VStack } from 'native-base';
 import { removeFlowerData } from '../store/thunks/remove-flower-data.thunk';
-import { AntDesign } from '@expo/vector-icons';
 import { FlowerList } from '../components/flower-list';
 import { AppDispatch } from '../store/store';
 
@@ -55,29 +54,10 @@ export const HomeScreen = ({
           onPress={() => void dispatch(removeFlowerData())}
           bg='red.400'
           m='1'
+          px='10'
         >
           Remove all
         </Button>
-        {/* <Fab
-          testID='home-screen-create-button'
-          renderInPortal={false}
-          shadow={2}
-          size='sm'
-          icon={<Icon color='white' as={AntDesign} name='plus' size='sm' />}
-          onPress={() => navigation.push('Create', {})}
-          bg='emerald.600'
-        /> */}
-
-        {/* <Fab
-          testID='home-screen-delete-button'
-          renderInPortal={false}
-          shadow={2}
-          size='sm'
-          icon={<Icon color='white' as={AntDesign} name='minus' size='sm' />}
-          onPress={() => void dispatch(removeFlowerData())}
-          bg='red.400'
-          placement='bottom-left'
-        /> */}
       </VStack>
     </View>
   );
